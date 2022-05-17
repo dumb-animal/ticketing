@@ -1,0 +1,16 @@
+apiVersion: skaffold/v2beta5
+kind: Config
+deploy:
+  kubectl:
+    manifests: ["./infrastructure/k8s/*.yaml"]
+build:
+  local:
+    push: false
+  artifacts:
+    - image: auth
+      context: auth
+      docker:
+        dockerfile: Dockerfile
+        noCache: false
+      sync:
+        infer: ["**/*"]
