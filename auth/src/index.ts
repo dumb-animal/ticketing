@@ -1,5 +1,6 @@
 import express from "express";
 import "express-async-errors";
+import mongoose from "mongoose";
 
 import { currentUserRouter } from "./routes/current-user";
 import { signinRouter } from "./routes/signin";
@@ -25,7 +26,17 @@ app.use(signupRouter);
 app.all("*", (req, res, next) => next(new NotFoundError()));
 app.use(errorHandler);
 
-// EXPORTS
-app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
-});
+// SERVER
+const start = async () => {
+  // DB CONNECTION
+  await mongoose.connect("mongodb://auth-mongo-service:27017/auth")
+    .then(() => console.log("Connected to MongoDB"))
+    .catch((err) => console.error("Error connecting to database: ", err));
+
+  // LISTENER
+  app.listen(PORT, () => {
+    console.log(`Listening on port: ${PORT}`);
+  });
+}
+
+start();
