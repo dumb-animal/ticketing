@@ -1,16 +1,16 @@
 import express, { Request, Response } from "express";
 
-import { body, validationResult } from "express-validator";
+import { body } from "express-validator";
+import { validateRequest } from "../middlewares/validate-request";
+import jwt from "jsonwebtoken";
 
-import { RequestValidationError } from "../errors/request-validation-error";
 import { BadRequestError } from "../errors/bad-request-error";
 
 import { User } from "../models/user";
 
 const router = express.Router();
 
-router.post(
-  "/api/users/signup",
+router.post("/api/users/signup",
   [
     body("email")
       .isEmail()
@@ -20,12 +20,8 @@ router.post(
       .isLength({ min: 4, max: 20 })
       .withMessage('Password must be between 3 and 20 characters')
   ],
+  validateRequest,
   async (req: Request, res: Response) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      throw new RequestValidationError(errors.array());
-    }
 
     const { email, password } = req.body;
     const existingUser = await User.findOne({ email });
@@ -33,6 +29,13 @@ router.post(
 
     const user = User.build({ email, password });
     await user.save({ validateBeforeSave: true });
+
+    // Generate JWT
+    const payload = { id: user._id, email: user.email };
+    const userJwt = jwt.sign(payload, process.env.JWT_KEY!);
+
+    // Store in om session object
+    req.session = { jwt: userJwt };
 
     res.status(201).send(user);
   }

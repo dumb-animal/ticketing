@@ -22,29 +22,42 @@ interface UserModel extends mongoose.Model<UserDocument> {
   build(attrs: UserAttrs): UserDocument;
 }
 
-const schema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true
+const schema = new mongoose.Schema(
+  {
+    email: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
   },
-  password: {
-    type: String,
-    required: true
+  {
+    // Не очень хорошая идея. Лучше это делать на уровне представления, а не на уровне модели
+    toJSON: {
+      transform(doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.password;
+        delete ret.__v;
+      }
+    },
   }
-});
+);
 
 // MIDDLEWARE
 schema.pre("save", async function (done) {
-  if (this.isModified('password')) {
+  if (this.isModified("password")) {
     this.set("password", await Password.toHash(this.get("password")));
   }
   done();
-})
+});
 
 // STATIC METHODS
 schema.statics.build = (Attr: UserAttrs) => {
   return new User(Attr);
-}
+};
 
 // EXPORT
 const User = mongoose.model<UserDocument, UserModel>("User", schema);
