@@ -18,10 +18,7 @@ const app = express();
 app.set('trust proxy', true);
 
 app.use(express.json());
-app.use(cookieSession({
-  signed: false,
-  secure: true
-}))
+app.use(cookieSession({ signed: false, secure: true }))
 
 // ROUTERS
 app.use(currentUserRouter);
