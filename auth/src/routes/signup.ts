@@ -34,7 +34,7 @@ router.post("/api/users/signup",
     const payload = { id: user._id, email: user.email };
     const userJwt = jwt.sign(payload, process.env.JWT_KEY!);
 
-    // Store in om session object
+    // Store it on session object
     req.session = { jwt: userJwt };
 
     res.status(201).send(user);
