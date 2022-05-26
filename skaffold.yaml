@@ -13,4 +13,15 @@ build:
         dockerfile: Dockerfile
         noCache: false
       sync:
-        infer: ["**/*"]
+        manual:
+          - dest: .
+            src: "src/**/*.ts"
+    - image: client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+        noCache: false
+      sync:
+        manual:
+          - dest: .
+            src: "**/*.js"
