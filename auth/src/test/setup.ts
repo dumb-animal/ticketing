@@ -15,6 +15,7 @@ beforeAll(async () => {
   // const mongoUri = mongod.getUri();
   // await mongoose.connect(mongoUri)
 
+  // TODO необходимо заменить локальную БД на mongodb-memory-server
   await mongoose.connect("mongodb://localhost:27017/test")
 });
 
