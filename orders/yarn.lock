@@ -291,10 +291,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
-"@dumb-animal/common@^1.0.7":
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/@dumb-animal/common/-/common-1.0.7.tgz#8cbf74e92d8b3132b0bc53110951a19c7a2ca5b4"
-  integrity sha512-qLbIrBEY51K8k9sUUpFWshKJOs4cVBAZxbM4qXvYAPTRXf91IElYOdxmEZtdWbDtXuBwwh5nIaBtMAx3y6tx9g==
+"@dumb-animal/common@^1.0.8":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@dumb-animal/common/-/common-1.0.8.tgz#cea35ab04e0bee2f079c59070cb079b04b074092"
+  integrity sha512-gm4qZW4CvVv3idp/iGfRMvWy5DeOUb+J7KCv4XLUegDwVyQtzN+PTEfU1Q1hn/MAU5Y8se2b8AuNEc+0T4JAcg==
   dependencies:
     "@types/cookie-session" "^2.0.44"
     "@types/express" "^4.17.13"

@@ -3,10 +3,10 @@ import "express-async-errors";
 import cookieSession from "cookie-session";
 import { currentUser, errorHandler, NotFoundError } from "@dumb-animal/common";
 
-// import { newTicket } from "./routes/new-ticket";
-// import { showTicket } from "./routes/show-ticket";
-// import { showTickets } from "./routes/show-tickets";
-// import { updateTicket } from "./routes/update-ticket";
+import { newOrder } from "./routes/new-order";
+import { showOrder } from "./routes/show-order";
+import { showOrders } from "./routes/show-orders";
+import { deleteOrder } from "./routes/delete-order";
 
 const app = express();
 
@@ -18,10 +18,10 @@ app.use(cookieSession({ signed: false, secure: process.env.NODE_ENV !== "test" }
 app.use(currentUser);
 
 // ROUTERS
-// app.use(newTicket);
-// app.use(showTicket);
-// app.use(showTickets);
-// app.use(updateTicket);
+app.use(newOrder);
+app.use(showOrder);
+app.use(showOrders);
+app.use(deleteOrder);
 
 // ERROR HANDLER
 app.all("*", (req, res, next) => next(new NotFoundError()));
