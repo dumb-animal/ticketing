@@ -34,3 +34,12 @@ build:
         manual:
           - dest: .
             src: "**/*.ts"
+    - image: orders
+      context: orders
+      docker:
+        dockerfile: Dockerfile
+        noCache: false
+      sync:
+        manual:
+          - dest: .
+            src: "**/*.ts"
