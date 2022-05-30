@@ -3,7 +3,7 @@ import "express-async-errors";
 import cookieSession from "cookie-session";
 import { currentUser, errorHandler, NotFoundError } from "@dumb-animal/common";
 
-import { newTicket } from "./routes/new-ticker";
+import { newTicket } from "./routes/new-ticket";
 import { showTicket } from "./routes/show-ticket";
 import { showTickets } from "./routes/show-tickets";
 import { updateTicket } from "./routes/update-ticket";

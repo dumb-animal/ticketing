@@ -9,6 +9,7 @@
 - [common](#common)
 - [infrastructure](#infrastructure)
 - [auth](#auth)
+- [nats-test](#nats-test)
 - client
 
 ### common
@@ -22,3 +23,7 @@
 ### auth
 
 Представляет собой единый центр аутентификации.
+
+### nats-test
+
+Необходима была для изучения основных принципов NATS.
