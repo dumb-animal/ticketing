@@ -21,6 +21,14 @@ spec:
               value: "3000"
             - name: MONGO_URI
               value: "mongodb://tickets-mongo-service:27017/tickets"
+            - name: NATS_URI
+              value: "http://nats-service:4222"
+            - name: NATS_CLUSTER_ID
+              value: "ticketing"
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:

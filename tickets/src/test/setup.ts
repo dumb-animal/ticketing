@@ -6,6 +6,8 @@ declare global {
   function signin(): Promise<string[]>
 };
 
+jest.mock('./../nats-wrapper');
+
 beforeAll(async () => {
   process.env.JWT_KEY = "hello";
   // TODO необходимо заменить локальную БД на mongodb-memory-server
@@ -13,6 +15,7 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
+  jest.clearAllMocks();
   await mongoose.connection.db.dropDatabase();
 });
 
