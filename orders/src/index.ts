@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import app from "./app";
 import { natsWrapper } from "./nats-wrapper";
+import { TicketCreatedListener } from "./events/listeners/ticket-created-listener";
+import { TicketUpdatedListener } from "./events/listeners/ticket-updated-listener";
 
 const start = async () => {
   // CHECK ENVIRONMENTS
@@ -10,6 +12,7 @@ const start = async () => {
   if (!process.env.MONGO_URI) throw new Error("MONGO_URI is not defined");
   if (!process.env.NATS_CLIENT_ID) throw new Error("NATS_CLIENT_ID is not defined");
   if (!process.env.NATS_CLUSTER_ID) throw new Error("NATS_CLUSTER_ID is not defined");
+  if (!process.env.QUEUE_GROUP_NAME) throw new Error("QUEUE_GROUP_NAME is not defined");
 
 
   // NATS CONNECTION
@@ -32,6 +35,9 @@ const start = async () => {
   await mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("Connected to MongoDB"))
     .catch((err) => console.error("Error connecting to database: ", err));
+
+  new TicketCreatedListener(natsWrapper.client).listen();
+  new TicketUpdatedListener(natsWrapper.client).listen();
 
   // LISTENER
   app.listen(process.env.PORT, () => {

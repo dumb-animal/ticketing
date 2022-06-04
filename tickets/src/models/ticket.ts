@@ -1,16 +1,18 @@
 import mongoose from "mongoose";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 interface TicketAttrs {
   title: string;
   price: number;
   userId: string;
-}
+};
 
 interface TicketDocument extends mongoose.Document {
   title: string;
   price: number;
   userId: string;
-  creadtedAt: Date;
+  version: number;
+  orderId?: string;
 };
 
 interface TicketModel extends mongoose.Model<TicketDocument> {
@@ -33,9 +35,9 @@ const ticketSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       required: true
     },
-    createdAt: {
-      type: Date,
-      default: new Date()
+    orderId: {
+      type: mongoose.Types.ObjectId,
+      default: undefined,
     }
   },
   {
@@ -49,6 +51,9 @@ const ticketSchema = new mongoose.Schema(
     }
   }
 );
+
+ticketSchema.set("versionKey", "version");
+ticketSchema.plugin(updateIfCurrentPlugin);
 
 ticketSchema.statics.build = (ticketAttrs: TicketAttrs) => {
   return new Ticket(ticketAttrs);

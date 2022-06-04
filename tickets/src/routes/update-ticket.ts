@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { NotFoundError, validateRequest, requireAuth, NotAuthorizedError } from "@dumb-animal/common";
+import { NotFoundError, validateRequest, requireAuth, NotAuthorizedError, BadRequestError } from "@dumb-animal/common";
 import { body } from "express-validator";
 import { TicketUpdatedPublisher } from "../events/publishers/ticket-updated-publisher";
 import { natsWrapper } from "../nats-wrapper";
@@ -21,6 +21,8 @@ router.put("/api/tickets/:id", requireAuth,
     const isOwner = ticket.userId.toString() === req.currentUser?.id;
     if (!isOwner) throw new NotAuthorizedError();
 
+    if (ticket.orderId) throw new BadRequestError("Cannot edit a reserved ticket");
+
     ticket.set({ ...req.body });
 
     await ticket.save();
@@ -28,7 +30,8 @@ router.put("/api/tickets/:id", requireAuth,
       id: ticket.id,
       price: ticket.price,
       title: ticket.title,
-      userId: ticket.userId
+      userId: ticket.userId,
+      version: ticket.version
     });
 
     res.status(200).json(ticket);

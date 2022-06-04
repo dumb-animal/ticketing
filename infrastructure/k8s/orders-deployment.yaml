@@ -21,6 +21,8 @@ spec:
               value: "3000"
             - name: MONGO_URI
               value: "mongodb://orders-mongo-service:27017/orders"
+            - name: QUEUE_GROUP_NAME
+              value: "orders-service"
             - name: NATS_URI
               value: "http://nats-service:4222"
             - name: NATS_CLUSTER_ID
