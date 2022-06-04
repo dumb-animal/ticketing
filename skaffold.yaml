@@ -43,3 +43,12 @@ build:
         manual:
           - dest: .
             src: "**/*.ts"
+    - image: expiration
+      context: expiration
+      docker:
+        dockerfile: Dockerfile
+        noCache: false
+      sync:
+        manual:
+          - dest: .
+            src: "**/*.ts"
