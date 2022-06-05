@@ -11,8 +11,7 @@ const setup = async () => {
   const ticket = Ticket.build({
     id: new mongoose.Types.ObjectId().toHexString(),
     title: "Title",
-    price: 50,
-    version: 0
+    price: 50
   });
   await ticket.save();
 
