@@ -1,8 +1,10 @@
 import mongoose from "mongoose";
 import app from "./app";
 import { natsWrapper } from "./nats-wrapper";
+
 import { TicketCreatedListener } from "./events/listeners/ticket-created-listener";
 import { TicketUpdatedListener } from "./events/listeners/ticket-updated-listener";
+import { PaymentCreatedListener } from "./events/listeners/payment-created-listener";
 import { ExpirationCompletedListener } from "./events/listeners/expiration-completed-listener";
 
 const start = async () => {
@@ -39,12 +41,13 @@ const start = async () => {
 
   new TicketCreatedListener(natsWrapper.client).listen();
   new TicketUpdatedListener(natsWrapper.client).listen();
+  new PaymentCreatedListener(natsWrapper.client).listen();
   new ExpirationCompletedListener(natsWrapper.client).listen();
 
   // LISTENER
   app.listen(process.env.PORT, () => {
     console.log(`Listening on port: ${process.env.PORT}`);
   });
-}
+};
 
 start();

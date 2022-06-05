@@ -10,6 +10,7 @@ const start = async () => {
   if (!process.env.JWT_KEY) throw new Error("JWT_KEY is not defined");
   if (!process.env.NATS_URI) throw new Error("NATS_URI is not defined");
   if (!process.env.MONGO_URI) throw new Error("MONGO_URI is not defined");
+  if (!process.env.STRIPE_KEY) throw new Error("STRIPE_KEY is not defined");
   if (!process.env.NATS_CLIENT_ID) throw new Error("NATS_CLIENT_ID is not defined");
   if (!process.env.NATS_CLUSTER_ID) throw new Error("NATS_CLUSTER_ID is not defined");
   if (!process.env.QUEUE_GROUP_NAME) throw new Error("QUEUE_GROUP_NAME is not defined");
