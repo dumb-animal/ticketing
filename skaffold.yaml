@@ -2,7 +2,9 @@ apiVersion: skaffold/v2beta5
 kind: Config
 deploy:
   kubectl:
-    manifests: ["./infrastructure/k8s/*.yaml"]
+    manifests:
+      - ./infrastructure/k8s/*.yaml
+      - ./infrastructure/k8s-development/*.yaml
 build:
   local:
     push: false
