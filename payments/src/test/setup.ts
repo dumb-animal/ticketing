@@ -1,4 +1,4 @@
-// import { MongoMemoryServer } from "mongodb-memory-server";
+import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 
@@ -10,8 +10,14 @@ jest.mock('./../nats-wrapper');
 
 beforeAll(async () => {
   process.env.JWT_KEY = "hello";
-  // TODO необходимо заменить локальную БД на mongodb-memory-server
-  await mongoose.connect("mongodb://localhost:27017/test")
+
+  // Создаем MongoDB сервер и получаем его URI
+  const mongod = await MongoMemoryServer.create();
+  const uri = mongod.getUri();
+  (global as any).__MONGOD = mongod;
+
+  // Подключаемся к серверу
+  await mongoose.connect(uri);
 });
 
 beforeEach(async () => {
@@ -20,8 +26,10 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
-  await mongoose.connection.db.dropDatabase();
-  await mongoose.connection.close();
+  const mongod = (global as any).__MONGOD;
+
+  await mongoose.disconnect();
+  await mongod.stop();
 });
 
 global.signin = async (id?: string) => {
