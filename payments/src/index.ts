@@ -5,6 +5,7 @@ import { OrderCreatedListener } from "./events/listeners/order-created-listener"
 import { OrderCancelledListener } from "./events/listeners/order-cancelled-listener";
 
 const start = async () => {
+  console.log("Starting up...");
   // CHECK ENVIRONMENTS
   if (!process.env.PORT) throw new Error("PORT is not defined");
   if (!process.env.JWT_KEY) throw new Error("JWT_KEY is not defined");
