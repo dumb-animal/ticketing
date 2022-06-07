@@ -1,35 +1,35 @@
-// import { MongoMemoryServer } from "mongodb-memory-server";
-import mongoose from "mongoose";
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose, { Mongoose } from "mongoose";
 import request from "supertest";
 import app from "../app";
 
 declare global {
-  function signin(): Promise<string[]>
+  function signin(): Promise<string[]>;
 };
 
 beforeAll(async () => {
   process.env.JWT_KEY = "hello";
 
-  // var mongod = await MongoMemoryServer.create();
-  // globalThis.__MONGOD__ = mongod;
-  // const mongoUri = mongod.getUri();
-  // await mongoose.connect(mongoUri)
+  // Создаем MongoDB сервер и получаем его URI
+  const mongod = await MongoMemoryServer.create();
+  const uri = mongod.getUri();
+  (global as any).__MONGOD = mongod;
 
-  // TODO необходимо заменить локальную БД на mongodb-memory-server
-  await mongoose.connect("mongodb://localhost:27017/test")
+  // Подключаемся к серверу
+  await mongoose.connect(uri);
 });
 
 beforeEach(async () => {
-  await mongoose.connection.db.dropDatabase();
-  // const collections = await mongoose.connection.db.collections();
-  // collections.forEach(async (c) => await c.deleteMany({}));
+  mongoose.connection.db.dropDatabase();
 });
 
 afterAll(async () => {
-  // await globalThis.__MONGOD__.stop();
-  await mongoose.connection.db.dropDatabase();
-  await mongoose.connection.close();
+  const mongod = (global as any).__MONGOD;
+
+  await mongoose.disconnect();
+  await mongod.stop();
 });
+
 
 global.signin = async () => {
   const email = "test@test.com";
